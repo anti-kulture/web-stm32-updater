@@ -32,7 +32,8 @@
     <div class="app">
 
         <!-- Title -->
-        <h1>WebUSB STM32 Updater Tool</h1>
+        <h1>Anti Kulture</h1>
+        <h2>Precision Disrupter Firmware Update Tool</h2>
         <p>This tool uses the WebUSB API to perform device firmware upgrade (DFU) on STM32 devices. Paste the link to
             your file below and enter both the flash size, and page size for your device. This can be either in
             hexadecimal (e.g. 0x20) or decimal (e.g. 128). Click connect to start the DFU process. Visit our repository
@@ -42,19 +43,19 @@
         </p>
 
         <!-- Text entry boxes -->
-        <div class="entry-boxes">
+        <!-- <div class="entry-boxes"> -->
 
             <!-- Update file entry box -->
-            <input id="fileLocationBox" style="flex-grow: 1;" type="url" placeholder="https://server/yourFile.bin">
+            <!-- <input id="fileLocationBox" style="flex-grow: 1;" type="url" placeholder="https://server/yourFile.bin"> -->
 
             <!-- Flash size entry box -->
-            <input id="flashSizeBox" type="text" size="11" placeholder="Flash size">
+            <!-- <input id="flashSizeBox" type="text" size="11" placeholder="Flash size"> -->
 
             <!-- Page size entry box -->
-            <input id="pageSizeBox" type="text" size="11" placeholder="Page size">
+            <!-- <input id="pageSizeBox" type="text" size="11" placeholder="Page size"> -->
 
 
-        </div>
+        <!-- </div> -->
 
         <!-- Buttons and progress bar -->
         <div class="buttons-and-bar">
@@ -120,7 +121,7 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch("firmware.bin"); // hardcoded for precision disrupter
+            let response = await fetch("https://update.antikulture.com/firmware.bin"); // hardcoded for precision disrupter
             // let response = await fetch(fileLocationBox.value);
 
 
