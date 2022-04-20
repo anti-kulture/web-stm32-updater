@@ -120,7 +120,9 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch(fileLocationBox.value);
+            let response = await fetch(titan-firmware.bin); // hardcoded for precision disrupter
+            // let response = await fetch(fileLocationBox.value);
+
 
             // This needs to be here to catch things like 404 errors, which aren't counted as a promise failure
             if (!response.ok) {
@@ -131,7 +133,8 @@
             let fileArr = await response.arrayBuffer();
 
             // Run the update sequence
-            await dfu.runUpdateSequence(fileArr, flashSizeBox.value, pageSizeBox.value);
+            await dfu.runUpdateSequence(fileArr, 0x20000, 0x80); // hardcoded for precision disrupter
+            // await dfu.runUpdateSequence(fileArr, flashSizeBox.value, pageSizeBox.value); / raj code
 
             // Done
             alert("Done!");

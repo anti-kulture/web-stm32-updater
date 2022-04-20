@@ -3,6 +3,3 @@
 
 # MacOS store
 *.DS_Store
-
-# Firmware files
-*.bin
