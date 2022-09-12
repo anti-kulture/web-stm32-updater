@@ -34,13 +34,21 @@
         <!-- Title -->
         <h1>Anti Kulture</h1>
         <h2>Precision Disrupter Firmware Update Tool</h2>
-        <p>This tool uses the WebUSB API to perform device firmware upgrade (DFU) on STM32 devices. Paste the link to
+        <!--<p>This tool uses the WebUSB API to perform device firmware upgrade (DFU) on STM32 devices. Paste the link to
             your file below and enter both the flash size, and page size for your device. This can be either in
             hexadecimal (e.g. 0x20) or decimal (e.g. 128). Click connect to start the DFU process. Visit our repository
             below to learn how this tool works, and fork your own version with whatever customizations you need. Make
             sure you're using Chromium or the latest <a href="https://www.google.com/chrome/" target="_blank">Chrome
                 Desktop</a>.
-        </p>
+        </p>-->
+        <ol type="1">
+            <li>Make sure you're using Chromium or the latest <a href="https://www.google.com/chrome/" target="_blank">Chrome
+                Desktop</a><li>
+            <li>Unplug the Precision Disrupter from your Eurorack power supply</li>
+            <li>Connect the Precision Disrupter to your computer via a USB-C cable while holding the DFU button located next to the USB-C socket</li>
+            <li>Click "UPDATE"</li>
+            <li>Wait until the process is completed and enjoy the new firwmare update! :)</li>
+            </ol> 
 
         <!-- Text entry boxes -->
         <!-- <div class="entry-boxes"> -->
@@ -61,7 +69,7 @@
         <div class="buttons-and-bar">
 
             <!-- Connect/program button -->
-            <button id="connectProgramButton">Connect</button>
+            <button id="connectProgramButton">UPDATE</button>
 
             <!-- Progress bar -->
             <progress id="progressBar" value="0" max="100"></progress>
@@ -122,7 +130,7 @@
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
             let response = await fetch("https://update.antikulture.com/firmware.bin"); // hardcoded for precision disrupter
-            // let response = await fetch(fileLocationBox.value);
+            // let response =x await fetch(fileLocationBox.value);
 
 
             // This needs to be here to catch things like 404 errors, which aren't counted as a promise failure
