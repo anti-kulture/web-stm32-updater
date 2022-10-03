@@ -2,7 +2,7 @@
 
 :root {
     --text-color: rgb(247, 247, 240);
-    --bg-color: rgb(40, 41, 53);
+    --bg-color: rgb(0, 0, 0);
     --input-bg-color: rgb(122, 122, 122);
     --button-hover-color: rgb(100, 100, 110);
     --button-click-color: rgb(80, 80, 90);
