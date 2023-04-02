@@ -120,9 +120,9 @@ let usbDfuDevice = class {
         // End of the flash in bytes
         this.flashEnd = 0x08020000;
         //app size in bytes MANUALLY CHANGE EVERY UPDATE !!
-        this.appDec = 80480
+        this.appDec   = 80480
         //application code end (DEC value when build) MANUALLY CHANGE EVERY UPDATE !!
-        this.appEnd = 0x08013A5F; // code v1.0 dec = 80480
+        this.appEnd   = 0x08013A5F; // code v1.0 dec = 80480
 
         // Page size in bytes
         this.pageSize = 0x80;
@@ -541,9 +541,9 @@ let usbDfuDevice = class {
             let totalBlocks = Math.ceil(this.appDec / 2048);
 
             // If the the total blocks is bigger than the application size, throw an error
-            if ((totalBlocks * 2048) > (this.appEnd - 0x08000000)) {
-                throw ("Error: File size is bigger than flash size");
-            }
+            //if ((totalBlocks * 2048) > (this.appEnd - 0x08000000)) {
+            //    throw ("Error: File size is bigger than flash size");
+            //}
 
             // For every block
             for (let block = 0; block < totalBlocks; block++) {
