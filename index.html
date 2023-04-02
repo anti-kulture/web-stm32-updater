@@ -79,11 +79,7 @@
         <div class="buttons-and-bar">
 
             <!-- Connect/program button -->
-            <button id="connectProgramButton">RESET & UPDATE</button>
-
-             <!-- Connect/program button -->
-             <button id="connectUpdateButton">UPDATE</button>
-
+            <button id="connectProgramButton">UPDATE</button>
             <!-- Progress bar -->
             <progress id="progressBar" value="0" max="100"></progress>
 
@@ -124,16 +120,8 @@
     connectProgramButton.addEventListener('click', function () {
 
         // Start the update function (This is an async process)
-        startUpdate();
+        startUpdateQuiet();
     });
-
-    // When the UPDATE button is clicked
-    connectUpdateButton.addEventListener('click', function () {
-
-        // Start the update function (This is an async process)
-        startUpdate();
-    });
-
     // This function runs the update process. It is asynchronous because the operations inside take some time
     async function startUpdate() {
 
@@ -180,7 +168,7 @@
             alert(error);
         }
     }
-    // This function runs the quite update process by erasing and writing only the application size, and not erasing the presets
+    // WIP This function runs the quite update process by erasing and writing only the application size, and not erasing the presets
     async function startUpdateQuiet() {
 
         // Disable the button to avoid the user calling this multiple times
