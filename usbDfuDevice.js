@@ -119,6 +119,10 @@ let usbDfuDevice = class {
 
         // End of the flash in bytes
         this.flashEnd = 0x08020000;
+        //app size in bytes MANUALLY CHANGE EVERY UPDATE !!
+        this.appDec = 80480
+        //application code end (DEC value when build) MANUALLY CHANGE EVERY UPDATE !!
+        this.appEnd = 0x08013A5F; // code v1.0 dec = 80480
 
         // Page size in bytes
         this.pageSize = 0x80;
@@ -316,6 +320,62 @@ let usbDfuDevice = class {
         }
     }
 
+    // Function which erases the application only, by not touching the presets (wip alberto)
+    async erase_app() {
+
+        // Clear the progress bar
+        dfuProgressHandler(0);
+
+        // Attempt to erase
+        try {
+
+            // erase until appSize address, 1 page at a time from 0x08000000
+            for (let address = 0x8000000; address < this.appEnd; address += this.pageSize) {
+
+                // Print the erase operation to the console
+                console.log("Erasing " + this.pageSize + " bytes at 0x0" +
+                    address.toString(16).toUpperCase());
+
+                // Array containing the erase command and address to erase (LSB first)
+                let arr = new Uint8Array([
+                    0x41,
+                    (address & 0x000000ff),
+                    (address & 0x0000ff00) >> 8,
+                    (address & 0x00ff0000) >> 16,
+                    (address & 0xff000000) >> 24
+                ]);
+
+                // Perform the erase
+                await this.device.controlTransferOut({
+                    requestType: 'class',
+                    recipient: 'interface',
+                    request: this.dfuRequest.DFU_DNLOAD,
+                    value: 0, // wValue Should be 0 for command mode
+                    index: 0
+                }, arr); // Holds the erase instruction and address location
+
+                // Issue a get status to apply the operation
+                await this.getStatus();
+
+                // Check again if it was successful
+                await this.getStatus();
+
+                // Work out the percentage done
+                let done = (100 / (this.flashEnd - 0x8000000)) * (address - 0x8000000);
+
+                // Update the progress bar
+                dfuProgressHandler(done);
+            }
+        }
+
+        // Catch errors
+        catch (error) {
+
+            // Return the error
+            return Promise.reject(error);
+        }
+    }
+
     // Function which erases the device
     async erase() {
 
@@ -453,6 +513,87 @@ let usbDfuDevice = class {
             return Promise.reject(error);
         }
     }
+    // Function to program only the application, not erasing presets
+    async program_app(fileArr) {
+
+        // Clear the progress bar
+        dfuProgressHandler(0);
+
+        // Attempt to program
+        try {
+
+            // Set the address pointer to 0x08000000 (The start of the flash)
+            await this.device.controlTransferOut({
+                requestType: 'class',
+                recipient: 'interface',
+                request: this.dfuRequest.DFU_DNLOAD,
+                value: 0, // wValue Should be 0 for command mode
+                index: 0
+            }, new Uint8Array([0x21, 0x00, 0x00, 0x00, 0x08]));
+
+            // Issue a get status to apply the operation
+            await this.getStatus();
+
+            // Check again if it was successful
+            await this.getStatus();
+
+            // Ctakes the application size as total size A block can be up to 2048 bytes
+            let totalBlocks = Math.ceil(this.appDec / 2048);
+
+            // If the the total blocks is bigger than the application size, throw an error
+            if ((totalBlocks * 2048) > (this.appEnd - 0x08000000)) {
+                throw ("Error: File size is bigger than flash size");
+            }
+
+            // For every block
+            for (let block = 0; block < totalBlocks; block++) {
+
+                // Log the current block info to the console
+                console.log("Programming block " + (block + 1) + " of " + totalBlocks);
+
+                // Calculate the data offset and bounds based on the current block
+                let dataStart = block * 2048;
+                let dataEnd = dataStart + 2048;
+
+                // Create 2048 sized data buffer to send
+                let blockData = new Uint8Array(2048);
+
+                // Copy data from the file to the dat buffer
+                blockData.set(new Uint8Array(fileArr.slice(dataStart, dataEnd)));
+
+                // Write block by block 
+                await this.device.controlTransferOut({
+                    requestType: 'class',
+                    recipient: 'interface',
+                    request: this.dfuRequest.DFU_DNLOAD,
+                    value: 2 + block, // wValue should be the block number + 2 
+                    index: 0
+                }, blockData); // 2048 byte block of data to program
+
+                // Issue a get status to apply the operation
+                await this.getStatus();
+
+                // Check again if it was successful
+                await this.getStatus();
+
+                // Work out the percentage done
+                let done = (100 / totalBlocks) * block;
+
+                // Update the progress bar
+                dfuProgressHandler(done);
+            }
+
+            // Done. Set the progress bar to 100%
+            dfuProgressHandler(100);
+        }
+
+        // Catch errors
+        catch (error) {
+
+            // Return the error
+            return Promise.reject(error);
+        }
+    }
 
     // Sequence to exit DFU mode, and start the application
     async detach() {
@@ -505,7 +646,7 @@ let usbDfuDevice = class {
         dfuDisconnectHandler();
     }
 
-    // Executes the full DFU sequence. 
+    // Executes the full DFU sequence. ( note this will erase and write the entire flash) 
     async runUpdateSequence(fileArr, flashSizeStr, pageSizeStr) {
 
         // Attempt the sequence
@@ -531,6 +672,59 @@ let usbDfuDevice = class {
 
             // Program the chip with the binary array
             await this.program(fileArr);
+
+            // Update the state
+            dfuStatusHandler("Booting");
+
+            // Detach the device
+            await this.detach();
+
+            // Update the state
+            dfuStatusHandler("Disconnecting");
+
+            // Disconnect
+            await this.disconnect();
+
+            // Return success
+            return Promise.resolve("Update Complete");
+        }
+
+        // Catch errors
+        catch (error) {
+
+            // Always disconnect on error
+            this.disconnect();
+
+            // Return the error
+            return Promise.reject(error);
+        }
+    }
+    // Executes the erase and the re-write of the application part of the memory, flash size is the applciaiton size, page size is 128, 0x80
+    async runFwUpgradeSequence(fileArr) {
+
+        // Attempt the sequence
+        try {
+
+            // Set Application size
+            this.setFlashAndPageSizes(this.appEnd, 0x80)
+
+            // Update the state
+            dfuStatusHandler("Connecting");
+
+            // Connect
+            await this.connect();
+
+            // Update the state
+            dfuStatusHandler("Erasing Application");
+
+            // Erase the chip
+            await this.erase_app();
+
+            // Update the state
+            dfuStatusHandler("Programming Application");
+
+            // Program the chip with the binary array
+            await this.program_app(fileArr);
 
             // Update the state
             dfuStatusHandler("Booting");

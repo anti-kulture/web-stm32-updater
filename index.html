@@ -79,7 +79,10 @@
         <div class="buttons-and-bar">
 
             <!-- Connect/program button -->
-            <button id="connectProgramButton">UPDATE</button>
+            <button id="connectProgramButton">RESET & UPDATE</button>
+
+             <!-- Connect/program button -->
+             <button id="connectUpdateButton">UPDATE</button>
 
             <!-- Progress bar -->
             <progress id="progressBar" value="0" max="100"></progress>
@@ -114,10 +117,18 @@
     const flashSizeBox = document.getElementById('flashSizeBox');
     const pageSizeBox = document.getElementById('pageSizeBox');
     const connectProgramButton = document.getElementById('connectProgramButton');
+    const connectUpdateButton = document.getElementById('connectUpdateButton');
     const progressBar = document.getElementById('progressBar');
 
-    // When the button is clicked
+    // When the RESET & UPDATE button is clicked
     connectProgramButton.addEventListener('click', function () {
+
+        // Start the update function (This is an async process)
+        startUpdate();
+    });
+
+    // When the UPDATE button is clicked
+    connectUpdateButton.addEventListener('click', function () {
 
         // Start the update function (This is an async process)
         startUpdate();
@@ -169,7 +180,51 @@
             alert(error);
         }
     }
+    // This function runs the quite update process by erasing and writing only the application size, and not erasing the presets
+    async function startUpdateQuiet() {
 
+        // Disable the button to avoid the user calling this multiple times
+        connectProgramButton.disabled = true;
+
+        // Try to get the file and run the update sequence
+        try {
+
+            // Disallow empty URLs
+           // if (fileLocationBox.value == "") {
+           //     throw ("Error: No URL provided");
+          //  }
+
+            // Attempt to get the file. Note, your browser will block this if you try to run it locally
+            // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
+            let response = await fetch("https://update.antikulture.com/firmware.bin"); // hardcoded for precision disrupter BIN
+            // let response =x await fetch(fileLocationBox.value);
+
+
+            // This needs to be here to catch things like 404 errors, which aren't counted as a promise failure
+            if (!response.ok) {
+                throw ("Error: " + response.status + " " + response.statusText);
+            }
+
+            // Create an array buffer containing the file data
+            let fileArr = await response.arrayBuffer();
+
+            // Run the update sequence
+            await dfu.runFwUpgradeSequence(fileArr); // takes the erase and the write size from the application size: note you have to write it manually in jason file
+
+            // Done
+            alert("Done!");
+        }
+
+        // On any caught errors
+        catch (error) {
+
+            // Reset the button and progress bar
+            dfuDisconnectHandler();
+
+            // Show the error as an alert
+            alert(error);
+        }
+    }   
     // Updates the button text. "Connecting", "Erasing", etc.
     function dfuStatusHandler(status) {
         connectProgramButton.innerHTML = status;
