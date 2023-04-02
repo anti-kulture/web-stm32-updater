@@ -700,7 +700,7 @@ let usbDfuDevice = class {
         }
     }
     // Executes the erase and the re-write of the application part of the memory, flash size is the applciaiton size, page size is 128, 0x80
-    async runFwUpgradeSequence(fileArr) {
+    async runUpdateSequenceQuiet(fileArr) {
 
         // Attempt the sequence
         try {

@@ -197,7 +197,7 @@
             let fileArr = await response.arrayBuffer();
 
             // Run the update sequence
-            await dfu.runFwUpgradeSequence(fileArr); // takes the erase and the write size from the application size: note you have to write it manually in jason file
+            await dfu.runUpdateSequenceQuiet(fileArr); // takes the erase and the write size from the application size: note you have to write it manually in jason file
 
             // Done
             alert("Done!");
