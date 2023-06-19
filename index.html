@@ -49,12 +49,12 @@
         </ol> 
         <br>
         <br>
-        <h2>v1.0, 02 APRIL 2023 </h3>
+        <h2>v1.1, 20 June 2023 (beta) </h3>
         <br>
         <h3>New on this OS update:</h3>
         <br>
         <ul>
-            <li>The Reset output triggers every first step  
+            <li>Reduced Led brightness
         </ul>
         
         <br>
@@ -120,7 +120,7 @@
     connectProgramButton.addEventListener('click', function () {
 
         // Start the update function (This is an async process)
-        startUpdate();
+        startUpdateQuiet();
     });
     // This function runs the update process. It is asynchronous because the operations inside take some time
     async function startUpdate() {
