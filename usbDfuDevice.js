@@ -361,7 +361,7 @@ let usbDfuDevice = class {
                 await this.getStatus();
 
                 // Work out the percentage done
-                let done = (100 / (this.flashEnd - 0x8000000)) * (address - 0x8000000);
+                let done = (100 / (this.appEnd - 0x8000000)) * (address - 0x8000000);
 
                 // Update the progress bar
                 dfuProgressHandler(done);
@@ -706,7 +706,7 @@ let usbDfuDevice = class {
         try {
 
             // Set Application size
-            this.setFlashAndPageSizes(this.appEnd, 0x80)
+            this.setFlashAndPageSizes(this.appDec, 0x80)
 
             // Update the state
             dfuStatusHandler("Connecting");
