@@ -543,9 +543,9 @@ let usbDfuDevice = class {
 
             // NOTE THIS IS COMMENTED CAUSE IS GIVING AN ERROR BUT I RECKON THERE IS NO NEED FOR THIS CHECK WHEN THE APP ONLY IS WRITTEN
             //If the the total blocks is bigger than the application size, throw an error
-           // if ((totalBlocks * 2048) > (this.flashEnd - 0x08000000)) {
-         //       throw ("Error: File size is bigger than flash size");
-         //   }
+            if ((totalBlocks * 2048) > (this.flashEnd - 0x08000000)) {
+                throw ("Error: File size is bigger than flash size");
+            }
 
             // For every block
             for (let block = 0; block < totalBlocks; block++) {
@@ -708,7 +708,7 @@ let usbDfuDevice = class {
         try {
 
             // Round up the Application size so that is divisible by 1024 (128 should be enough but to be sure) ALBERTO
-            this.appDec = Math.ceil(this.appDec / 1024) * 1024;
+            this.appDec = Math.ceil(this.appDec / 2048) * 2048;
             
             // Set Application size
             this.setFlashAndPageSizes(this.appDec, 0x80)
