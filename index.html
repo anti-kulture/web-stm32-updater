@@ -120,10 +120,10 @@
     connectProgramButton.addEventListener('click', function () {
 
         // Start the update function (This is an async process)
-        startUpdate();
+        startUpdateQuiet();
     });
     // This function runs the update process. It is asynchronous because the operations inside take some time
-    async function startUpdateQuiet() {
+    async function startUpdate() {
 
         // Disable the button to avoid the user calling this multiple times
         connectProgramButton.disabled = true;
