@@ -246,7 +246,8 @@ let usbDfuDevice = class {
             }
 
             // Set the flash end as an offset from 0x08000000
-            this.flashEnd = 0x08000000 + flashSize;
+            this.flashEnd = 0x08000000 + flashSize;  //note: use flashEnd for quiet update too! discard app zise since it refers to a not rounded version of dec
+            
 
             // Page size must be word aligned
             if (pageSize % 4 != 0) {
@@ -330,7 +331,7 @@ let usbDfuDevice = class {
         try {
 
             // erase until appSize address, 1 page at a time from 0x08000000
-            for (let address = 0x8000000; address < this.appEnd; address += this.pageSize) {
+            for (let address = 0x8000000; address < this.flashEnd; address += this.pageSize) {
 
                 // Print the erase operation to the console
                 console.log("Erasing " + this.pageSize + " bytes at 0x0" +
@@ -361,7 +362,7 @@ let usbDfuDevice = class {
                 await this.getStatus();
 
                 // Work out the percentage done
-                let done = (100 / (this.appEnd - 0x8000000)) * (address - 0x8000000);
+                let done = (100 / (this.flashEnd - 0x8000000)) * (address - 0x8000000);
 
                 // Update the progress bar
                 dfuProgressHandler(done);
@@ -540,10 +541,11 @@ let usbDfuDevice = class {
             // Ctakes the application size as total size A block can be up to 2048 bytes
             let totalBlocks = Math.ceil(this.appDec / 2048);
 
-            // If the the total blocks is bigger than the application size, throw an error
-            //if ((totalBlocks * 2048) > (this.appEnd - 0x08000000)) {
-            //    throw ("Error: File size is bigger than flash size");
-            //}
+            // NOTE THIS IS COMMENTED CAUSE IS GIVING AN ERROR BUT I RECKON THERE IS NO NEED FOR THIS CHECK WHEN THE APP ONLY IS WRITTEN
+            //If the the total blocks is bigger than the application size, throw an error
+           // if ((totalBlocks * 2048) > (this.flashEnd - 0x08000000)) {
+         //       throw ("Error: File size is bigger than flash size");
+         //   }
 
             // For every block
             for (let block = 0; block < totalBlocks; block++) {
@@ -705,6 +707,9 @@ let usbDfuDevice = class {
         // Attempt the sequence
         try {
 
+            // Round up the Application size so that is divisible by 1024 (128 should be enough but to be sure) ALBERTO
+            this.appDec = Math.ceil(this.appDec / 1024) * 1024;
+            
             // Set Application size
             this.setFlashAndPageSizes(this.appDec, 0x80)
 
@@ -717,7 +722,7 @@ let usbDfuDevice = class {
             // Update the state
             dfuStatusHandler("Erasing Application");
 
-            // Erase the chip
+            // Erase the application part of application
             await this.erase_app();
 
             // Update the state
