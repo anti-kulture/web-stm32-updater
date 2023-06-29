@@ -54,7 +54,7 @@
         <h3>New on this OS update:</h3>
         <br>
         <ul>
-            <li>Reduced Led brightness ( only of red)
+            <li>Reduced red leds brightness
         </ul>
         
         <br>
@@ -123,7 +123,7 @@
         startUpdate();
     });
     // This function runs the update process. It is asynchronous because the operations inside take some time
-    async function startUpdate() {
+    async function startUpdateQuiet() {
 
         // Disable the button to avoid the user calling this multiple times
         connectProgramButton.disabled = true;
