@@ -56,7 +56,7 @@
         <ul>
             <li>Reduced red leds brightness(30%)
         </ul>
-        
+        <h3>Factory firmware:</h3>
         <br>
         <br>
 
@@ -79,11 +79,18 @@
         <div class="buttons-and-bar">
 
             <!-- Connect/program button -->
-            <button id="connectProgramButton">UPDATE</button>
+            <button id="connectProgramButton">RESET & UPDATE</button>
             <!-- Progress bar -->
             <progress id="progressBar" value="0" max="100"></progress>
 
+            <!-- Connect/program button quiet-->
+            <!--<button id="connectProgramButtonQuiet">UPDATE</button>-->
+            <!-- Progress bar quiet -->
+            <!-- <progress id="progressBarQuiet" value="0" max="100"></progress>-->
+
         </div>
+
+       
 
         <!-- Footer -->
         <footer>
@@ -116,12 +123,23 @@
     const connectUpdateButton = document.getElementById('connectUpdateButton');
     const progressBar = document.getElementById('progressBar');
 
+    //const connectProgramButtonQuiet = document.getElementById('connectProgramButtonQuiet');
+    //const connectUpdateButtonQuiet = document.getElementById('connectUpdateButtonQuiet');
+    //const progressBarQuiet = document.getElementById('progressBarQuiet');
+
     // When the RESET & UPDATE button is clicked
     connectProgramButton.addEventListener('click', function () {
 
-        // Start the update function (This is an async process)
-        startUpdateQuiet();
+    // Start the update function (This is an async process)
+    startUpdate();
     });
+ 
+    // When the update button is clicked
+   // connectProgramButtonQuiet.addEventListener('click', function () {
+
+        // Start the update function (This is an async process)
+  //      startUpdateQuiet();
+    //});
     // This function runs the update process. It is asynchronous because the operations inside take some time
     async function startUpdate() {
 
