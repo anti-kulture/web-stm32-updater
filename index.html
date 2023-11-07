@@ -49,14 +49,15 @@
         </ol> 
         <br>
         <br>
-        <h2>v1.1, 20 June 2023 (beta) </h3>
+        <h2>v23.192 (beta) </h3>
         <br>
-        <h3>New on this OS update:</h3>
+        <h3>7th Nov 2023</h3>
+        <br>
+        <h4>New on this update:</h3>
         <br>
         <ul>
-            <li>Reduced red leds brightness(30%)
+            <li>An external reset event does not prevent to switch to the next chained preset.
         </ul>
-        <h3>Factory firmware:</h3>
         <br>
         <br>
 
@@ -156,7 +157,7 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch("https://update.antikulture.com/firmware_dim.bin"); // hardcoded for precision disrupter BIN
+            let response = await fetch("https://update.antikulture.com/pd.firmware-v23_192.bin"); // hardcoded for precision disrupter BIN
             // let response =x await fetch(fileLocationBox.value);
 
 
@@ -202,7 +203,7 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch("https://update.antikulture.com/firmware.bin"); // hardcoded for precision disrupter BIN
+            let response = await fetch("https://update.antikulture.com/pd-firmware-v23.192.bin"); // hardcoded for precision disrupter BIN
             // let response =x await fetch(fileLocationBox.value);
 
 
