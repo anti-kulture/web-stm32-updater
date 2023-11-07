@@ -43,7 +43,7 @@
                 Desktop</a> </li>
             <li><b>Unplug</b> the Precision Disrupter from your Eurorack power supply</li>
             <li><b>Connect</b> the Precision Disrupter to your computer via a USB-C cable while holding the DFU button located next to the USB-C socket</li>
-            <li>Click <b>UPDATE</b> and select the STM device from the pop-up menu</li>
+            <li>Click <b>RESET & UPDATE</b> and select the STM device from the pop-up menu</li>
             <li><b>Wait</b> until the process is completed and enjoy your new firwmare :)</li>
             
         </ol> 
@@ -156,7 +156,7 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch("https://update.antikulture.com/firmware.bin"); // hardcoded for precision disrupter BIN
+            let response = await fetch("https://update.antikulture.com/firmware_dim.bin"); // hardcoded for precision disrupter BIN
             // let response =x await fetch(fileLocationBox.value);
 
 
