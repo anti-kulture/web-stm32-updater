@@ -34,33 +34,47 @@
     <div class="app">
 
         <!-- Title -->
-        <h1 style="font-size:40px; font-weight:bold;">PRECISION DISRUPTER UPDATER (WIP)</h1>
+        <h1 style="font-size:50px; font-weight:bold; text-align: center;" >PRECISION DISRUPTER UPDATER</h1>
         <br>
-        <h2>HOW TO UPDATE</h2>
+        <br>
+        <br>
+        <h2>UPDATE STEP-GUIDE:</h2>
         <br>
         <ol type="1">
-            <li>Make sure you're using Chromium or the latest <a href="https://www.google.com/chrome/" target="_blank">Chrome
+            <li>make sure you're using Chromium or the latest <a href="https://www.google.com/chrome/" target="_blank">Chrome
                 Desktop</a> </li>
-            <li><b>Unplug</b> the Precision Disrupter from your Eurorack power supply</li>
-            <li><b>Connect</b> the Precision Disrupter to your computer via a USB-C cable while holding the DFU button located next to the USB-C socket</li>
-            <li>Click <b>RESET & UPDATE</b> and select the STM device from the pop-up menu</li>
-            <li><b>Wait</b> until the process is completed and enjoy your new firwmare :)</li>
+            <li><b style="font-weight:bold;">unplug</b> the PD from your Eurorack power supply</li>
+            <li><b style="font-weight:bold;">connect</b> the PD to your computer via a USB-C cable while holding the DFU button located next to the USB-C socket</li>
+            <li>Click <b style="font-weight:bold;">CONNECT</b> and select the STM device from the pop-up menu</li>
+            <li>Click <b style="font-weight:bold;">RESET & UPDATE</b></li>
+            <li> <b style="font-weight:bold;">IMPORTANT:</b> this process will erase your presets</li>
+            <li><b style="font-weight:bold;">wait</b> until the process is completed</li>
+            <li><b style="font-weight:bold;">unplug</b> the PD</li>
+            <li><b style="font-weight:bold;">note: </b>in case of failure, repeat the steps 1-8 a 2nd time</li>
+
+
             
         </ol> 
         <br>
         <br>
-        <h2>v23.192 (beta) </h3>
+        <h2>LATEST RELEASE: </h3>         
         <br>
-        <h3>7th Nov 2023</h3>
+         <div style="clear: both">
+            <h3 style="float: left; font-weight:bold;">v23.312</h3>
+            <h3 style="float: right">8th Nov 2023</h3>
+        </div>
+        <hr />
+        </ul>
         <br>
-        <h4>New on this update:</h3>
+        <h4>Change Log:</h4>
         <br>
         <ul>
-            <li>An external reset event does not prevent to switch to the next chained preset.
+            <li>An external reset event does not prevent switching to the next preset in<i> Ext Clock Mode</i>
+            <li>Reduced overall leds brightness
         </ul>
         <br>
         <br>
-
+        
         <!-- Text entry boxes -->
         <!-- <div class="entry-boxes"> -->
 
@@ -157,7 +171,7 @@
 
             // Attempt to get the file. Note, your browser will block this if you try to run it locally
             // See here: https://stackoverflow.com/questions/43262121/trying-to-use-fetch-and-pass-in-mode-no-cors 
-            let response = await fetch("https://update.antikulture.com/pd-firmware-v23_192.bin"); // hardcoded for precision disrupter BIN
+            let response = await fetch("https://update.antikulture.com/pd-firmware-v23.312.bin"); // hardcoded for precision disrupter BIN
             // let response =x await fetch(fileLocationBox.value);
 
 
